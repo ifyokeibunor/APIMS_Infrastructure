@@ -12,11 +12,12 @@ This document provides step-by-step instructions I deployed an API Management se
 The command below was used to create a service principal for terraform with a contributor role. The command is run on azure cloudshell using the bash option
 <br>``az ad sp create-for-rbac --name terraform --role Contributor --scopes /subscriptions/<my_subscription_id>`` 
 
-The output from the above command looks like the screenshot shown below. Copied it and saved it in a note pad. I used it in terraform code for authentication. 
+The output from the above command looks like the screenshot shown below. Copied it and saved it in a note pad. I used it in terraform code for authentication. <br>
  ![image](https://github.com/ifyokeibunor/Eurowinfrastructure/assets/104580680/32fa9331-4d32-4af8-9806-5bba5e8fc904)
 
 
 As best practice, I created a separate file called terraform.tfvars file where the above output is used as environmental variable. This way, secrets will not be hardcoded in the terraform configuration file
+<br>
  ![image](https://github.com/ifyokeibunor/Eurowinfrastructure/assets/104580680/8fb61bf6-c27e-44d3-96f1-62ca5e822b7c)
 
 ### IMPORTANT: 
@@ -25,7 +26,7 @@ Network: /24 gives 256 IP addresses for the subnets this provides room for scali
 Vnet: 172.16.0.0/16
 Staging Subnet: 172.16.0.0/24  
 Production Subnet: 172.16.1.0/24
-•	Based and environment and requirement, a Network security group was created allow communication on port 443 and 80. (this can be relative to different environments). I created the network security group **_eurow_am_sg_** and associated it to the relevant subnet
+•	Based and environment and requirement, a Network security group was created allow communication on port 443 and 80. (this can be relative to different environments). I created the network security group **_eurow_am_sg_** and associated it to the relevant subnet <br>
 ![image](https://github.com/ifyokeibunor/Eurowinfrastructure/assets/104580680/bf512802-dd79-492d-9c4d-e3985d871ba7)
 
 2.	**Create a new Terraform file:**
@@ -44,3 +45,20 @@ Create a directory for terraform files, name its “Infrastructure”. In this d
 8.	Access and manage the deployed resources:
 •	access the Azure portal to view and manage the deployed resources, including the API Management service, virtual network, subnets, and App Service plans.
 •	Use the Azure portal, Azure CLI, or Azure PowerShell to interact with and configure the resources further, as required. Such as Network security group.
+
+
+## RESULT
+The teraform file sucessfully provissioned the following Resources
+    1. Resources Group
+    2. Vnet and two subnets; one for staging and one for production
+    3. two App Service Plans, One for staging and the other for production
+    4. API MAngement Service  with external connection and associated to a subnet.
+    
+    ### view from azure portal
+ ![image](https://github.com/ifyokeibunor/Eurowinfrastructure/assets/104580680/9d55effb-c4b6-4ed3-a43e-e9ba450b0a2d)
+ 
+ ### APIMS Developer porter
+ ![image](https://github.com/ifyokeibunor/Eurowinfrastructure/assets/104580680/0b50b349-71f0-4f0a-9ee4-1c8faf13498e)
+
+ 
+
