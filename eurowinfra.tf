@@ -41,9 +41,25 @@ resource "azurerm_service_plan" "production" {
   os_type             = "Linux"
   sku_name            = "S1"
 }
-# Create an API Management service
-resource "azurerm_api_management" "eurow-apim" {
-  name                = "eurow-apim"
+# Create an API Management service for production
+resource "azurerm_api_management" "eurow-apim-prod" {
+  name                = "eurow-apim-prod"
+  location            = azurerm_resource_group.eurow_RG.location
+  resource_group_name = azurerm_resource_group.eurow_RG.name
+  publisher_name      = "Eurowings digital"
+  publisher_email     = "ambrozyfex@gmail.com"
+  sku_name            = "Developer_1"
+  virtual_network_type = "External"
+  virtual_network_configuration {
+      subnet_id = azurerm_subnet.production_subnet.id
+  }
+  depends_on = [
+    azurerm_service_plan.production
+  ]
+}
+# Create an API Management service for staging
+resource "azurerm_api_management" "eurow-apim-stage" {
+  name                = "eurow-apim-stage"
   location            = azurerm_resource_group.eurow_RG.location
   resource_group_name = azurerm_resource_group.eurow_RG.name
   publisher_name      = "Eurowings digital"
@@ -54,7 +70,6 @@ resource "azurerm_api_management" "eurow-apim" {
       subnet_id = azurerm_subnet.staging_subnet.id
   }
   depends_on = [
-    azurerm_service_plan.staging,
-    azurerm_service_plan.production,
+    azurerm_service_plan.staging
   ]
 }
